@@ -32,7 +32,7 @@ var (
 		MaxRounds:            20,
 		MinMaxPlayers:        2,
 		MaxMaxPlayers:        24,
-		MinClientsPerIPLimit: 1,
+		MinClientsPerIPLimit: 4,
 		MaxClientsPerIPLimit: 24,
 	}
 	SupportedLanguages = map[string]string{
@@ -415,9 +415,9 @@ func endTurn(lobby *Lobby) {
 
 	var roundOverMessage string
 	if lobby.CurrentWord == "" {
-		roundOverMessage = "Round over. No word was chosen."
+		roundOverMessage = "Round's up! No word was chosen."
 	} else {
-		roundOverMessage = fmt.Sprintf("Round over. The word was '%s'", lobby.CurrentWord)
+		roundOverMessage = fmt.Sprintf("Round's up! The word was '%s'", lobby.CurrentWord)
 	}
 
 	//The drawer can potentially be null if he's kicked, in that case we proceed with the round if anyone has already

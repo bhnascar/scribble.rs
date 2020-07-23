@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Scribble.rs - Game</title>
+    <title>Baby Pictionary - Game</title>
     <meta charset="UTF-8"/>
     <link rel="stylesheet" type="text/css" href="/resources/base.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/lobby.css"/>
@@ -158,7 +158,7 @@
                 <input id="tool-type-rubber" class="custom-check-or-radio line-width-button"
                        onchange="chooseTool(rubber)" type="radio" name="tool-type">
                 <div class="line-width-button-content">
-                    <img alt="Rubber" title="Rubber tool" src="/resources/rubber.svg" width="40px"
+                    <img alt="Rubber" title="Erase tool" src="/resources/rubber.svg" width="40px"
                          height="40px"/>
                 </div>
             </label>
@@ -198,8 +198,6 @@
         </button>
     </div>
 </div>
-
-{{template "footer"}}
 
 <script type="text/javascript" src="/resources/floodfill.js"></script>
 <script type="text/javascript">
@@ -589,7 +587,7 @@
                 '<div class="score-and-status">' +
                 '<div>' +
                 '<span class="playerscore">' + player.score + '</span>' +
-                '<span class="last-turn-score">(Last turn: ' + player.lastScore + ')</span>' +
+                '<span class="last-turn-score">&nbsp;(Last turn: ' + player.lastScore + ')</span>' +
                 '</div>';
             if (player.state === 1) {
                 newPlayerElement += '<span>✏️</span>';

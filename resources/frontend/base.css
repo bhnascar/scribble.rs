@@ -15,10 +15,9 @@ html {
 }
 
 body {
-    background-color: antiquewhite;
+    background-color: #00C7FF url(/resources/background.png);
+    background-image: url(/resources/background.png);
     margin: 0;
-    position: relative;
-    min-height: 100vh;
 }
 
 a {
@@ -36,11 +35,16 @@ a:hover {
 h1, h2 {
     margin: 0;
     text-align: center;
-    color: rgb(248, 148, 164);
+    color: white;
+    -webkit-text-fill-color: rgb(248, 148, 164);
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 h1 {
-    font-size: 6rem;
+    font-size: 5rem;
 }
 
 h2 {
@@ -50,7 +54,6 @@ h2 {
 ul {
     margin: 0;
 }
-
 footer {
     display: flex;
     justify-content: center;
@@ -74,4 +77,12 @@ footer {
     justify-content: center;
     border-bottom: 1rem solid black;
     padding: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+*, *:focus, *:hover {
+    outline:none;
 }
