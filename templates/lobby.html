@@ -594,7 +594,11 @@
             } else if (player.state === 2) {
                 newPlayerElement += '<span>✔️</span>';
             }
-            newPlayerElement += '</div></div>';
+            newPlayerElement += '</div>';
+            if (player.rank == 1 && player.score !== 0) {
+                newPlayerElement += '<div class="leader"></div>';
+            }
+            newPlayerElement += '</div>';
             playerContainer.innerHTML += newPlayerElement;
         });
     }
