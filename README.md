@@ -4,8 +4,14 @@ Just a themed fork of the [scribble.rs](https://github.com/scribble-rs/scribble.
 
 ![alt tag](https://github.com/bhnascar/scribble.rs/blob/master/screenshot.png)
 
-### Sticker credits
+## Credits
+
+#### Stickers
 
 QooBee - https://shop.qoobee.com/product/qoobee-sticker-packs/ <br />
 Pusheen - http://123emoji.com/pusheen-sticker-4872/ <br />
 Snoopy - http://123emoji.com/snoopy-stickers-981/ <br />
+
+#### Background
+
+Baby toys - https://deszone.net/item/baby-toy-vector-seamless-free-pattern/
