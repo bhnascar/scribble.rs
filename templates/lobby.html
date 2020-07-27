@@ -65,13 +65,14 @@
                 </div>
 
                 <div id="start-dialog" class="center-dialog-content">
-                    <span class="dialog-title">Start the game</span>
+                    <span class="dialog-title">You're the host!</span>
                     <br />
                     <label for="name">Your name</label>
                     <div>
                         <input class="dialog-button username-input" type="text" name="name"></input>
                         <button class="dialog-button" onclick="startDialogChangeName()">Change</button>
                     </div>
+                    <p>Hit start when everyone is ready!</p>
                     <button class="dialog-button" onclick="startGame()">Start</button>
                 </div>
 
@@ -609,6 +610,7 @@
     function applyPlayers(players) {
         playerContainer.innerHTML = "";
         cachedPlayers = players;
+        players.sort((a, b) => b.score - a.score);
         players.forEach(function (player) {
             //We don't wanna show the disconnected players.
             if (!player.connected) {
@@ -628,27 +630,24 @@
             }
             let newPlayerElement = '<div class="player ' + stateStyleClass + '">' +
                 '<span class="rank">' + player.rank + '</span>' +
+                '<div class="name-and-score">' +
                 '<span class="playername';
-            if (player.id === ownID) {
-                newPlayerElement += ' playername-self';
-            }
-            newPlayerElement +=
+                if (player.id === ownID) {
+                    newPlayerElement += ' playername-self';
+                }
+                newPlayerElement +=
                 '">' + player.name + '</span>' +
-                '<div class="score-and-status">' +
-                '<div>' +
-                '<span class="playerscore">' + player.score + '</span>' +
-                '<span class="last-turn-score">&nbsp;(Last turn: ' + player.lastScore + ')</span>' +
-                '</div>';
+                '<span class="playerscore">Score: ' + player.score + '</span>';
+            newPlayerElement += '</div><div class="player-status">';
             if (player.state === 1) {
-                newPlayerElement += '<span id="active_drawer">✏️</span>';
+                newPlayerElement += '<span id="active-drawer">✏️</span>';
             } else if (player.state === 2) {
                 newPlayerElement += '<span>✔️</span>';
             }
-            newPlayerElement += '</div>';
+            newPlayerElement += '</div></div>';
             if (player.rank == 1 && player.score !== 0) {
                 newPlayerElement += '<div class="leader"></div>';
             }
-            newPlayerElement += '</div>';
             playerContainer.innerHTML += newPlayerElement;
         });
     }

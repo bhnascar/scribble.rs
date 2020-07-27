@@ -1,6 +1,6 @@
 @keyframes pulse {
-    0% { transform: scale3d(1, 1, 1); }
-    100% { transform: scale3d(1.2, 1.2, 1.2); }
+    0% { transform: rotateZ(-20deg) }
+    100% { transform: rotateZ(0deg); }
 }
 
 .leader {
@@ -19,13 +19,24 @@
     margin-top: 0.5rem;
 }
 
+.player-status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20%;
+}
+
+.player-status span {
+    font-size: 24px;
+}
+
 #start-dialog .username-input {
     margin-bottom: 1.5rem;
 }
 
-#active_drawer {
+#active-drawer {
     animation-name: pulse;
-    animation-duration: 0.3s;
+    animation-duration: 0.2s;
     animation-direction: alternate-reverse;
     animation-iteration-count: infinite;
 }
@@ -379,7 +390,8 @@ input[type="button"]:active,
 .player {
     background-color: rgb(245, 245, 245);
     padding: 0.2rem;
-    display: grid;
+    display: flex;
+    flex-direction: row;
     border-radius: 15px;
     border: 2px solid #9ad4e5;
     overflow: hidden;
@@ -408,18 +420,17 @@ input[type="button"]:active,
 
 .rank {
     display: flex;
-    grid-row-start: 1;
-    grid-row-end: 3;
     justify-content: center;
     align-items: center;
-    width: 2.5rem;
+    width: 20%;
     font-size: 1.5rem;
 }
 
-.score-and-status {
+.name-and-score {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
+    width: 60%;
 }
 
 .last-turn-score {
