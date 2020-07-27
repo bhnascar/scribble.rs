@@ -15,7 +15,7 @@
 }
 
 .username-input {
-    padding: 0.5rem;
+    padding: 0.5rem !important;
     margin-top: 0.5rem;
 }
 
@@ -76,9 +76,6 @@
     height: 0;
     padding-bottom: 56.25%;
     position: relative;
-    border-radius: 15px;
-    border: 2px solid #9ad4e5;
-    overflow: hidden;
 }
 
 #drawing-board-inner-wrapper {
@@ -94,6 +91,9 @@
     background-color: white;
     width: 100%;
     height: 100%;
+    border-radius: 15px;
+    border: 2px solid #9ad4e5;
+    overflow: hidden;
 }
 
 #center-dialog {
@@ -114,8 +114,7 @@
     justify-content: center;
     align-items: center;
     visibility: hidden;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding: 1rem;
     position: absolute;
     left: 50%;
     top: 50%;
@@ -184,9 +183,13 @@
     padding: 10px;
 }
 
+#message-input:hover,
+#message-input:focus {
+    background-color: #e8faff;
+}
+
 #message-input:focus {
     outline: none;
-    background-color: rgb(250, 232, 235);
 }
 
 .dialog-title {

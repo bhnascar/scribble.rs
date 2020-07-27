@@ -67,7 +67,7 @@
                 <div id="start-dialog" class="center-dialog-content">
                     <span class="dialog-title">Start the game</span>
                     <br />
-                    <label for="name">Username</label>
+                    <label for="name">Your name</label>
                     <div>
                         <input class="dialog-button username-input" type="text" name="name"></input>
                         <button class="dialog-button" onclick="startDialogChangeName()">Change</button>
@@ -78,7 +78,7 @@
                 <div id="wait-dialog" class="center-dialog-content">
                     <span class="dialog-title">Waiting to start...</span>
                     <br />
-                    <label for="name">Username</label>
+                    <label for="name">Your name</label>
                     <div>
                         <input class="dialog-button username-input" type="text" name="name"></input>
                         <button class="dialog-button" onclick="waitDialogChangeName()">Change</button>
@@ -327,7 +327,7 @@
         drawingBoard.width = drawingBoard.clientWidth;
         drawingBoard.height = drawingBoard.clientHeight;
         setLineWidth(localLineWidthUnscaled);
-        chat.style.maxHeight = drawingBoard.height + "px";
+        chat.style.maxHeight = drawingBoard.offsetHeight + "px";
     }
 
     // Moving this here to extract the context after resizing
