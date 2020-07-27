@@ -66,11 +66,23 @@
 
                 <div id="start-dialog" class="center-dialog-content">
                     <span class="dialog-title">Start the game</span>
+                    <br />
+                    <label for="name">Username</label>
+                    <div>
+                        <input class="dialog-button username-input" type="text" name="name"></input>
+                        <button class="dialog-button" onclick="startDialogChangeName()">Change</button>
+                    </div>
                     <button class="dialog-button" onclick="startGame()">Start</button>
                 </div>
 
                 <div id="wait-dialog" class="center-dialog-content">
                     <span class="dialog-title">Waiting to start...</span>
+                    <br />
+                    <label for="name">Username</label>
+                    <div>
+                        <input class="dialog-button username-input" type="text" name="name"></input>
+                        <button class="dialog-button" onclick="waitDialogChangeName()">Change</button>
+                    </div>
                 </div>
 
                 <div id="kick-dialog" class="center-dialog-content">
@@ -85,7 +97,7 @@
     <div id="chat">
         <div id="message-container"></div>
         <form class="message-input-form" onsubmit="return sendMessage()">
-            <input id="message-input" type="text" autocomplete="off" placeholder="Type your message"/>
+            <input id="message-input" type="text" autocomplete="off" placeholder="Type your guess here!"/>
         </form>
     </div>
     <div id="toolbox">
@@ -214,6 +226,7 @@
         socket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/v1/ws?lobby_id={{.LobbyID}}");
     }
 
+    const usernameInputs = document.querySelectorAll(".username-input");
     const messageInput = document.getElementById("message-input");
     const playerContainer = document.getElementById("player-container");
     const wordContainer = document.getElementById("word-container");
@@ -279,6 +292,32 @@
         socket.send(JSON.stringify({
             type: "name-change",
             data: choice,
+        }));
+    }
+
+    function startDialogChangeName() {
+        const choice = document.querySelector("#start-dialog .username-input").value;
+        changeName(choice);
+    }
+
+    function waitDialogChangeName() {
+        const choice = document.querySelector("#wait-dialog .username-input").value;
+        changeName(choice);
+    }
+
+    function changeName(newName) {
+        // Username should be cleared.
+        if (newName === "") {
+            document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        } else {
+            //We already persist our new username here. If the backend doesn't like it, it will reset it either way.
+            //Therefore it shouldn't matter.
+            document.cookie = "username=" + newName + ";expires=Tue, 19 Jan 2038 00:00:00 UTC;path=/;samesite=strict";
+        }
+
+        socket.send(JSON.stringify({
+            type: "name-change",
+            data: newName,
         }));
     }
 
@@ -478,6 +517,10 @@
                 }
             }
 
+            usernameInputs.forEach((elem) => {
+                elem.value = ownName;
+            });
+
             if (ready.players && ready.players.length) {
                 applyPlayers(ready.players)
             }
@@ -616,7 +659,7 @@
                 '<span class="last-turn-score">&nbsp;(Last turn: ' + player.lastScore + ')</span>' +
                 '</div>';
             if (player.state === 1) {
-                newPlayerElement += '<span>✏️</span>';
+                newPlayerElement += '<span id="active_drawer">✏️</span>';
             } else if (player.state === 2) {
                 newPlayerElement += '<span>✔️</span>';
             }
