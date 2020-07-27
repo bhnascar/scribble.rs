@@ -273,26 +273,7 @@
 
     function showNameChangeDialog() {
         let choice = prompt("Please choose your new name. Clearing the name will assign you a new random name.", ownName);
-        //Hitting cancel results in null.
-        //Since we pre fill the dialog with the current name, empty means that
-        //it has been cleared on purpose.
-        if (choice == null) {
-            return;
-        }
-
-        // Username should be cleared.
-        if (choice === "") {
-            document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-        } else {
-            //We already persist our new username here. If the backend doesn't like it, it will reset it either way.
-            //Therefore it shouldn't matter.
-            document.cookie = "username=" + choice + ";expires=Tue, 19 Jan 2038 00:00:00 UTC;path=/;samesite=strict";
-        }
-
-        socket.send(JSON.stringify({
-            type: "name-change",
-            data: choice,
-        }));
+        changeName(choice);
     }
 
     function startDialogChangeName() {
