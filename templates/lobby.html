@@ -4,6 +4,7 @@
 <head>
     <title>Baby Pictionary - Game</title>
     <meta charset="UTF-8"/>
+    <script type="text/javascript" src="/resources/host.js"></script>
     <link rel="stylesheet" type="text/css" href="/resources/base.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/lobby.css"/>
     <link rel="icon" type="image/png" href="/resources/favicon.png"/>
@@ -452,9 +453,10 @@
 
     socket.onopen = () => console.log("Successfully Connected");
 
-    let ownID, ownerID, ownName;
+    let ownID, ownerID, ownName, host;
     let maxRounds = 0;
     let roundEndTime = 0;
+    let guessedCorrectly = false;
     socket.onmessage = event => {
         let parsed = JSON.parse(event.data);
         if (parsed.type === "ready") {
@@ -465,6 +467,7 @@
             ownID = ready.playerId;
             maxRounds = ready.maxRounds;
             roundEndTime = ready.roundEndTime;
+            host = ready.host;
             applyRounds(ready.round, ready.maxRounds);
 
             if (ready.round === 0) {
@@ -494,7 +497,7 @@
         } else if (parsed.type === "message") {
             applyMessage("", parsed.data.author, parsed.data.content);
         } else if (parsed.type === "system-message") {
-            applyMessage("system-message", "System", parsed.data);
+            applyMessage("system-message", host, parsed.data);
         } else if (parsed.type === "non-guessing-player-message") {
             applyMessage("non-guessing-player-message", parsed.data.author, parsed.data.content);
         } else if (parsed.type === "line") {
@@ -515,6 +518,7 @@
             clear(context);
 
             roundEndTime = parsed.data.roundEndTime;
+            guessedCorrectly = false;
             applyRounds(parsed.data.round, maxRounds);
             applyPlayers(parsed.data.players);
 
@@ -565,6 +569,15 @@
                             <span class="chat-name">` + author + `</span>
                             <span class="message-content">` + message + `</span>
                         </div>`;
+
+        const img_src = getSticker(author, message, guessedCorrectly || allowDrawing);
+        if (img_src) {
+            messageContainer.innerHTML += `<img src="` + img_src + `" height="50" />`;
+        }
+
+        if (message.indexOf('correctly guessed') != -1) {
+            guessedCorrectly = true;
+        }
     }
 
     let cachedPlayers;

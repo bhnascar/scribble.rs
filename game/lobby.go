@@ -199,6 +199,7 @@ func handleMessage(input string, sender *Player, lobby *Lobby) {
 			lobby.scoreEarnedByGuessers += sender.LastScore
 			sender.State = Standby
 			WriteAsJSON(sender, JSEvent{Type: "system-message", Data: "You have correctly guessed the word."})
+			triggerCorrectGuessEvent(lobby)
 
 			if !lobby.isAnyoneStillGuessing() {
 				endTurn(lobby)
@@ -206,7 +207,6 @@ func handleMessage(input string, sender *Player, lobby *Lobby) {
 				//Since the word has been guessed correctly, we reveal it.
 				WriteAsJSON(sender, JSEvent{Type: "update-wordhint", Data: lobby.WordHintsShown})
 				recalculateRanks(lobby)
-				triggerCorrectGuessEvent(lobby)
 				triggerPlayersUpdate(lobby)
 			}
 
@@ -644,8 +644,8 @@ type Rounds struct {
 
 // CreateLobby allows creating a lobby, optionally returning errors that
 // occurred during creation.
-func CreateLobby(playerName, language string, drawingTime, rounds, maxPlayers, customWordChance, clientsPerIPLimit int, customWords []string, enableVotekick bool) (*Player, *Lobby, error) {
-	lobby := createLobby(drawingTime, rounds, maxPlayers, customWords, customWordChance, clientsPerIPLimit, enableVotekick)
+func CreateLobby(playerName, language string, drawingTime, rounds, maxPlayers, customWordChance, clientsPerIPLimit int, customWords []string, enableVotekick bool, host string) (*Player, *Lobby, error) {
+	lobby := createLobby(drawingTime, rounds, maxPlayers, customWords, customWordChance, clientsPerIPLimit, enableVotekick, host)
 	player := createPlayer(playerName)
 
 	lobby.Players = append(lobby.Players, player)
@@ -696,6 +696,7 @@ type Ready struct {
 	WordHints      []*WordHint   `json:"wordHints"`
 	Players        []*Player     `json:"players"`
 	CurrentDrawing []interface{} `json:"currentDrawing"`
+	Host           string        `json:"host"`
 }
 
 func OnConnected(lobby *Lobby, player *Player) {
@@ -712,6 +713,7 @@ func OnConnected(lobby *Lobby, player *Player) {
 		WordHints:      lobby.GetAvailableWordHints(player),
 		Players:        lobby.Players,
 		CurrentDrawing: lobby.CurrentDrawing,
+		Host:           lobby.Host,
 	}})
 
 	//This state is reached when the player refreshes before having chosen a word.

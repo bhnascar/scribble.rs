@@ -74,6 +74,11 @@
     grid-column-end: 4; 
 }
 
+#lobby-create #host {
+    grid-column-start: 1; 
+    grid-column-end: 4; 
+}
+
 #lobby-create #custom-words-chance {
     grid-column-start: 1; 
     grid-column-end: 4; 

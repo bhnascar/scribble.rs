@@ -4,6 +4,7 @@ import (
 	"math/rand"
 	"sync"
 	"time"
+	"log"
 
 	"github.com/gorilla/websocket"
 	uuid "github.com/satori/go.uuid"
@@ -61,6 +62,7 @@ type Lobby struct {
 	// lobby object.
 	CurrentDrawing []interface{}
 	EnableVotekick bool
+	Host string
 }
 
 // WordHint describes a character of the word that is to be guessed, whether
@@ -239,7 +241,8 @@ func createLobby(
 	customWords []string,
 	customWordsChance int,
 	clientsPerIPLimit int,
-	enableVotekick bool) *Lobby {
+	enableVotekick bool,
+	host string) *Lobby {
 
 	createDeleteMutex.Lock()
 
@@ -252,6 +255,7 @@ func createLobby(
 		CustomWordsChance:   customWordsChance,
 		ClientsPerIPLimit:   clientsPerIPLimit,
 		EnableVotekick:      enableVotekick,
+		Host:                host,
 		CurrentDrawing:      make([]interface{}, 0, 0),
 	}
 
@@ -264,6 +268,8 @@ func createLobby(
 	lobbies = append(lobbies, lobby)
 
 	createDeleteMutex.Unlock()
+
+	log.Println("Host is " + host)
 
 	return lobby
 }

@@ -38,6 +38,14 @@
                         {{end}}
                     </select>
                 </div>
+                <div id="host">
+                    <label for="host">Host</label>
+                    <select name="host">
+                        <option value="qoobee">QooBee</option>
+                        <option value="pusheen">Pusheen</option>
+                        <option value="snoopy">Snoopy</option>
+                    </select>
+                </div>
                 <div>
                     <label for="drawing_time">Draw Time (sec)</label>
                     <input class="input-item" type="number" name="drawing_time" min="{{.MinDrawingTime}}"
