@@ -54,16 +54,24 @@ h2 {
 ul {
     margin: 0;
 }
+
 footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    bottom: 0;
+    position: relative;
+    bottom: 10px;
     height: 2rem;
-    width: 100%;
-    background-color: lightslategray;
-    color: white;
+    padding: 10px;
+    background-color: white;
+    border-radius: 15px;
+    border: 2px solid #9ad4e5;
+    margin: 10px auto;
+    width: 350px;
+}
+
+.footer-item a {
+    text-decoration: underline;
 }
 
 .footer-item + .footer-item {
