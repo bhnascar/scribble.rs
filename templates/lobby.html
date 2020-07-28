@@ -317,6 +317,11 @@
             document.cookie = "username=" + newName + ";expires=Tue, 19 Jan 2038 00:00:00 UTC;path=/;samesite=strict";
         }
 
+        // Update all username input dialogs with latest username.
+        usernameInputs.forEach((elem) => {
+            elem.value = newName;
+        });
+
         socket.send(JSON.stringify({
             type: "name-change",
             data: newName,
