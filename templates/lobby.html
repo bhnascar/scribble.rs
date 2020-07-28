@@ -86,6 +86,17 @@
                     </div>
                 </div>
 
+                <div id="change-name-dialog" class="center-dialog-content">
+                    <span class="dialog-title">Change name</span>
+                    <br />
+                    <label for="name">Your name</label>
+                    <div>
+                        <input class="dialog-button username-input" type="text" name="name"></input>
+                        <button class="dialog-button" onclick="nameDialogChangeName()">Change</button>
+                    </div>
+                    <button onclick="hideChangeNameDialog()" class="dialog-button dialog-close-button">Close</button>
+                </div>
+
                 <div id="kick-dialog" class="center-dialog-content">
                     <span class="dialog-title">Vote to kick a player</span>
                     <div id="kick-dialog-players"></div>
@@ -241,6 +252,7 @@
 
     const startDialog = document.getElementById("start-dialog");
     const waitDialog = document.getElementById("wait-dialog");
+    const changeNameDialog = document.getElementById("change-name-dialog");
     const wordDialog = document.getElementById("word-dialog");
     const wordButtonZero = document.getElementById("word-button-zero");
     const wordButtonOne = document.getElementById("word-button-one");
@@ -273,8 +285,11 @@
     }
 
     function showNameChangeDialog() {
-        let choice = prompt("Please choose your new name. Clearing the name will assign you a new random name.", ownName);
-        changeName(choice);
+        changeNameDialog.style.visibility = "visible";
+    }
+
+    function hideChangeNameDialog() {
+        changeNameDialog.style.visibility = "hidden";
     }
 
     function startDialogChangeName() {
@@ -284,6 +299,11 @@
 
     function waitDialogChangeName() {
         const choice = document.querySelector("#wait-dialog .username-input").value;
+        changeName(choice);
+    }
+
+    function nameDialogChangeName() {
+        const choice = document.querySelector("#change-name-dialog .username-input").value;
         changeName(choice);
     }
 
