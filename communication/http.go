@@ -26,5 +26,5 @@ func remoteAddressToSimpleIP(input string) string {
 }
 
 func Serve(port int) error {
-	return http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+	return http.ListenAndServe(fmt.Sprintf("0.0.0.0:%d", port), nil)
 }
