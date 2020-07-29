@@ -113,8 +113,9 @@
         </form>
     </div>
     <div id="toolbox">
-        <input class="toolbox-group" type="color" id="color-picker" onchange="setColor()" value="#000000"
-               alt="Current color (Click to change)" title="Current color (Click to change)">
+        <div class="color-preview-container toolbox-group">
+            <div id="color-preview" style="background-color: #000000 !Important"></div>
+        </div>
         <div class="color-button-container toolbox-group">
             <!-- These buttons use !important for their color in order
             to prevent hover and active colors to appear. -->
@@ -222,9 +223,11 @@
                 </div>
             </label>
         </div>
-        <button class="canvas-button toolbox-group" style="font-size: 2rem;" onclick="clearCanvasAndSendEvent()"
+        <div class="toolbox-group">
+            <button class="canvas-button" style="font-size: 2rem;" onclick="clearCanvasAndSendEvent()"
                 alt="Clear the canvas" title="Clear the canvas">🗑
-        </button>
+            </button>
+        </div>
     </div>
 </div>
 
@@ -247,7 +250,7 @@
     const timeLeft = document.getElementById("time-left");
     const drawingBoard = document.getElementById("drawing-board");
     const chat = document.getElementById("chat");
-    const colorPicker = document.getElementById("color-picker");
+    const colorPreview = document.getElementById("color-preview");
     const centerDialog = document.getElementById("center-dialog");
 
     const startDialog = document.getElementById("start-dialog");
@@ -397,10 +400,10 @@
 
     function setColor(value) {
         if (value === undefined) {
-            localColor = colorPicker.value;
+            localColor = colorPreview.style.backgroundColor;
         } else {
             localColor = value;
-            colorPicker.value = value;
+            colorPreview.style.backgroundColor = value;
         }
         updateCursor();
     }

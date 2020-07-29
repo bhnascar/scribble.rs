@@ -282,12 +282,16 @@ input[type="button"]:active,
     background-color: #abeafe;
 }
 
-#color-picker {
+.color-preview-container {
     border: 0;
     background-color: white;
-    height: 50px;
     width: 50px;
     padding: 0px;
+}
+
+#color-preview {
+    height: 100%;
+    width: 100%;
 }
 
 @-moz-document url-prefix() {
@@ -308,9 +312,6 @@ input[type="button"]:active,
 }
 
 .color-button-container {
-    border-radius: 10px;
-    border: 2px solid #9ad4e5;
-    overflow: hidden;
     display: flex;
     flex-direction: column;
 }
@@ -343,8 +344,12 @@ input[type="button"]:active,
 }
 
 .toolbox-group {
+    height: 50px;
     margin-bottom: 10px;
     margin-right: 10px;
+    border-radius: 10px;
+    border: 2px solid #9ad4e5;
+    overflow: hidden;
 }
 
 .toolbox-group:last-child {
@@ -357,17 +362,8 @@ input[type="button"]:active,
     overflow: hidden;
 }
 
-#toolbox button.canvas-button {
-    border-radius: 10px;
-    border: 2px solid #9ad4e5;
-    overflow: hidden;
-}
-
 .pencil-sizes-container {
     display: flex;
-    border-radius: 10px;
-    border: 2px solid #9ad4e5;
-    overflow: hidden;
 }
 
 #player-container {
