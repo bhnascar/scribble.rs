@@ -28,6 +28,9 @@ func main() {
 			log.Printf("Listening on port %d sourced from PORT environment variable\n", portHTTP)
 		} else {
 			portHTTP = 8080
+			if len(envPort) > 0 && parseError != nil {
+				log.Printf("Error parsing PORT env: %s\n", parseError)
+			}
 			log.Printf("Listening on default port %d\n", portHTTP)
 		}
 	}
