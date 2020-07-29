@@ -22,7 +22,7 @@ func main() {
 	} else {
 		//Support for heroku, as heroku expects applications to use a specific port.
 		envPort, _ := os.LookupEnv("PORT")
-		parsed, parseError := strconv.ParseInt(envPort, 10, 16)
+		parsed, parseError := strconv.ParseUint(envPort, 10, 16)
 		if parseError == nil {
 			portHTTP = int(parsed)
 			log.Printf("Listening on port %d sourced from PORT environment variable\n", portHTTP)
