@@ -6,6 +6,7 @@
     <meta charset="UTF-8"/>
     <script type="text/javascript" src="/resources/host.js"></script>
     <script type="text/javascript" src="/resources/clipboard.min.js"></script>
+    <script type="text/javascript" src="/resources/toolpreview.js"></script>
     <link rel="stylesheet" type="text/css" href="/resources/base.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/lobby.css"/>
     <link rel="icon" type="image/png" href="/resources/favicon.png"/>
@@ -176,14 +177,15 @@
                 <input id="tool-type-pencil" class="custom-check-or-radio line-width-button"
                        onchange="chooseTool(pen)" type="radio" name="tool-type" checked>
                 <div class="line-width-button-content">
-                    <span id="tool-type-pencil-button" style="font-size: 2rem;">✏️</span>
+                    <img alt="Fill" title="Fill tool" src="/resources/pencil.png" width="40px"
+                         height="40px"/>
                 </div>
             </label>
             <label for="tool-type-fill">
                 <input id="tool-type-fill" class="custom-check-or-radio line-width-button"
                        onchange="chooseTool(fillBucket)" type="radio" name="tool-type">
                 <div class="line-width-button-content">
-                    <img alt="Fill" title="Fill tool" src="/resources/fill.svg" width="40px"
+                    <img alt="Fill" title="Fill tool" src="/resources/bucket.png" width="40px"
                          height="40px"/>
                 </div>
             </label>
@@ -191,7 +193,7 @@
                 <input id="tool-type-rubber" class="custom-check-or-radio line-width-button"
                        onchange="chooseTool(rubber)" type="radio" name="tool-type">
                 <div class="line-width-button-content">
-                    <img alt="Rubber" title="Erase tool" src="/resources/rubber.svg" width="40px"
+                    <img alt="Rubber" title="Erase tool" src="/resources/eraser.png" width="40px"
                          height="40px"/>
                 </div>
             </label>
@@ -227,8 +229,10 @@
             </label>
         </div>
         <div class="toolbox-group">
-            <button class="canvas-button" style="font-size: 2rem;" onclick="clearCanvasAndSendEvent()"
-                alt="Clear the canvas" title="Clear the canvas">🗑
+            <button class="canvas-button" onclick="clearCanvasAndSendEvent()"
+                alt="Clear the canvas" title="Clear the canvas">
+                <img alt="Rubber" title="Erase tool" src="/resources/trash.png" width="32px"
+                         height="32px"/>
             </button>
         </div>
     </div>
@@ -277,6 +281,8 @@
     const soundToggleLabel = document.getElementById("sound-toggle-label");
     let sound = localStorage.getItem("sound") === "true";
     updateSoundIcon();
+
+    const toolPreview = new ToolPreview(document.getElementById("drawing-board-inner-wrapper"));
 
     function showKickDialog() {
         if (cachedPlayers && cachedPlayers) {
@@ -380,16 +386,19 @@
         return drawingBoard.clientWidth / baseWidth;
     }
 
+    let allowDrawing = false;
+
     const pen = 0;
     const rubber = 1;
     const fillBucket = 2;
+    chooseTool(pen);
 
-    let allowDrawing = false;
-    let localColor = "#000000";
-    let localLineWidth;
+    let localColor;
+    setColor('#000000');
+
     let localLineWidthUnscaled;
-    let localTool = pen;
-    setLineWidth(5);
+    let localLineWidth;
+    setLineWidth(8);
 
     //Those are not scaled for now, as the whole toolbar would then have to incorrectly size up and down.
     document.getElementById("size-8-button").style.width = 8 + "px";
@@ -415,13 +424,13 @@
             localColor = value;
             colorPreview.style.backgroundColor = value;
         }
-        updateCursor();
+        toolPreview.setColor(localColor);
     }
 
     function setLineWidth(value) {
         localLineWidthUnscaled = value;
         localLineWidth = value * scaleDownFactor();
-        updateCursor();
+        toolPreview.setWidth(localLineWidth);
     }
 
     function chooseTool(value) {
@@ -431,39 +440,13 @@
             //If this ends up with an invalid value, we use the pencil.
             localTool = pen;
         }
+        toolPreview.setTool(localTool);
     }
 
     function hexToRgb(hex) {
         return hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, (m, r, g, b) => '#' + r + r + g + g + b + b)
             .substring(1).match(/.{2}/g)
             .map(x => parseInt(x, 16));
-    }
-
-    function updateCursor() {
-        let cursorColor;
-        let borderColor = "#FFFFFF";
-        if (localColor.startsWith("#")) {
-            cursorColor = hexToRgb(localColor);
-
-            const hsp = Math.sqrt(
-                0.299 * (cursorColor[0] * cursorColor[0]) +
-                0.587 * (cursorColor[1] * cursorColor[1]) +
-                0.114 * (cursorColor[2] * cursorColor[2])
-            );
-
-            if (hsp > 127.5) {
-                borderColor = "rgb(0,0,0)";
-            } else {
-                borderColor = "rgb(255,255,255)";
-            }
-
-            cursorColor = "rgb(" + cursorColor[0] + "," + cursorColor[1] + "," + cursorColor[2] + ")";
-        } else {
-            cursorColor = localColor;
-        }
-
-        let circleSize = localLineWidth * scaleUpFactor();
-        drawingBoard.style.cursor = "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"" + (circleSize + 2) + "\" height=\"" + (circleSize + 2) + "\"><circle cx=\"" + (circleSize / 2) + "\" cy=\"" + (circleSize / 2) + "\" r=\"" + (circleSize / 2) + "\" style=\"fill: " + cursorColor + "; stroke: " + borderColor + ";\"/></svg>') " + (circleSize / 2) + " " + (circleSize / 2) + ", auto";
     }
 
     function clearCanvasAndSendEvent() {
