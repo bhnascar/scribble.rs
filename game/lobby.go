@@ -167,6 +167,8 @@ func HandleEvent(raw []byte, received *JSEvent, lobby *Lobby, player *Player) er
 			return fmt.Errorf("invalid data in name-change event: %v", received.Data)
 		}
 		commandNick(player, lobby, newName)
+	} else if received.Type == "keep-alive" {
+		log.Printf("Received keep-alive message from: %v\n", player.Name)
 	}
 
 	return nil

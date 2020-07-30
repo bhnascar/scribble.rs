@@ -502,6 +502,24 @@
         hideKickDialog();
     }
 
+    let heartbeat = null;
+    function startHeartbeat() {
+        console.log('Sending heartbeat');
+        heartbeat = setInterval(() => {
+            socket.send(JSON.stringify({
+                type: "keep-alive",
+                data: ""
+            }));
+        }, 30000);
+    }
+
+    function clearHeartbeat() {
+        if (heartbeat != null) {
+            clearInterval(heartbeat);
+            heartbeat = null;
+        }
+    }
+
     //This automatically scrolls down the chat on arrivals of new messages
     new MutationObserver(() => messageContainer.scrollTop = messageContainer.scrollHeight)
         .observe(messageContainer, {
@@ -532,6 +550,7 @@
             if (ready.round === 0) {
                 if (ownerID === ownID) {
                     startDialog.style.visibility = "visible";
+                    startHeartbeat();
                 } else {
                     waitDialog.style.visibility = "visible";
                 }
@@ -594,7 +613,10 @@
         }
     };
 
-    socket.onclose = event => console.log("Socket Closed Connection: ", event);
+    socket.onclose = event => {
+        console.log("Socket Closed Connection: ", event);
+        clearHeartbeat();
+    }
     socket.onerror = error => console.log("Socket Error: ", error);
 
     function promptWords(wordOne, wordTwo, wordThree) {
