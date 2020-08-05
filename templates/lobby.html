@@ -487,7 +487,6 @@
 
     let heartbeat = null;
     function startHeartbeat() {
-        console.log('Sending heartbeat');
         heartbeat = setInterval(() => {
             socket.send(JSON.stringify({
                 type: "keep-alive",
@@ -533,10 +532,10 @@
             if (ready.round === 0) {
                 if (ownerID === ownID) {
                     startDialog.style.visibility = "visible";
-                    startHeartbeat();
                 } else {
                     waitDialog.style.visibility = "visible";
                 }
+                startHeartbeat();
             }
 
             usernameInputs.forEach((elem) => {
