@@ -496,7 +496,9 @@ func endGame(lobby *Lobby) {
 	recalculateRanks(lobby)
 	triggerPlayersUpdate(lobby)
 
-	WritePublicSystemMessage(lobby, "Game over. Type !start again to start a new round.")
+	for _, target := range lobby.Players {
+		WriteAsJSON(target, &JSEvent{Type: "game-over", Data: ""})
+	}
 }
 
 // selectNextDrawer returns the next person that's supposed to be drawing, but
