@@ -496,8 +496,16 @@ func endGame(lobby *Lobby) {
 	recalculateRanks(lobby)
 	triggerPlayersUpdate(lobby)
 
+	winner := ""
 	for _, target := range lobby.Players {
-		WriteAsJSON(target, &JSEvent{Type: "game-over", Data: ""})
+		if target.Rank == 1 {
+			winner = target.Name
+			break
+		}
+	}
+
+	for _, target := range lobby.Players {
+		WriteAsJSON(target, &JSEvent{Type: "game-over", Data: winner})
 	}
 }
 

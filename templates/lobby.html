@@ -84,6 +84,7 @@
 
                 <div id="restart-dialog" class="center-dialog-content">
                     <span class="dialog-title">Game over!</span>
+                    <div class="winner-name"></div>
                     <div class="top-spacing" for="name">Make a new lobby to start a new game!</div>
                     <div class="top-spacing">Or restart with same settings and players:</div>
                     <button class="dialog-button" onclick="startGame()">Restart</button>
@@ -91,6 +92,7 @@
 
                 <div id="game-over-dialog" class="center-dialog-content">
                     <span class="dialog-title">Game over!</span>
+                    <div class="winner-name"></div>
                     <div class="top-spacing" for="name">Waiting for host to restart...</div>
                     <div class="top-spacing">Or make a new lobby to host your own game!</div>
                 </div>
@@ -612,6 +614,10 @@
         } else if (parsed.type === "your-turn") {
             promptWords(parsed.data[0], parsed.data[1], parsed.data[2]);
         } else if (parsed.type === "game-over") {
+            const winnerNames = document.getElementsByClassName("winner-name");
+            for (let i = 0; i < winnerNames.length; i++) {
+                winnerNames[i].innerText = `The winner is 🥇${parsed.data}🥇`;
+            }
             if (ownerID === ownID) {
                 restartDialog.style.visibility = "visible";
             } else {
