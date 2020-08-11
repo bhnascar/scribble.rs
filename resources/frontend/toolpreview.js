@@ -22,6 +22,7 @@ class ToolPreview {
     this.tool.style.height = TOOL_IMG_SIZE + 'px';
     this.tool.style.position = 'absolute';
     this.tool.style.pointerEvents = 'none';
+    this.tool.style.display = 'none';
     this.tool.src = "/resources/pencil.png";
 
     this.preview = document.createElement('div');
@@ -32,6 +33,7 @@ class ToolPreview {
     this.preview.style.backgroundColor = '#000000';
     this.preview.style.opacity = '0.5';
     this.preview.style.pointerEvents = 'none';
+    this.preview.style.display = 'none';
 
     this.width = 50;
     this.board = board;
