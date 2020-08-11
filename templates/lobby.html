@@ -7,6 +7,7 @@
     <script type="text/javascript" src="/resources/host.js"></script>
     <script type="text/javascript" src="/resources/clipboard.min.js"></script>
     <script type="text/javascript" src="/resources/toolpreview.js"></script>
+    <script type="text/javascript" src="/resources/reactions.js"></script>
     <link rel="stylesheet" type="text/css" href="/resources/base.css"/>
     <link rel="stylesheet" type="text/css" href="/resources/lobby.css"/>
     <link rel="icon" type="image/png" href="/resources/favicon.png"/>
@@ -132,10 +133,10 @@
         </form>
     </div>
     <div id="toolbox">
-        <div class="color-preview-container toolbox-group">
+        <div class="color-preview-container toolbox-group drawing-tools">
             <div id="color-preview" style="background-color: #000000 !Important"></div>
         </div>
-        <div class="color-button-container toolbox-group">
+        <div class="color-button-container toolbox-group drawing-tools">
             <!-- These buttons use !important for their color in order
             to prevent hover and active colors to appear. -->
             <div class="color-button-row">
@@ -187,7 +188,7 @@
                         onclick="setColor('#63300d')"></button>
             </div>
         </div>
-        <div class="pencil-sizes-container toolbox-group">
+        <div class="pencil-sizes-container toolbox-group drawing-tools">
             <label for="tool-type-pencil">
                 <input id="tool-type-pencil" class="custom-check-or-radio line-width-button"
                        onchange="chooseTool(pen)" type="radio" name="tool-type" checked>
@@ -213,7 +214,7 @@
                 </div>
             </label>
         </div>
-        <div class="pencil-sizes-container toolbox-group">
+        <div class="pencil-sizes-container toolbox-group drawing-tools">
             <label for="size8">
                 <input id="size8" class="custom-check-or-radio line-width-button" onchange="setLineWidth(8)"
                        type="radio" name="line-width" checked>
@@ -243,12 +244,23 @@
                 </div>
             </label>
         </div>
-        <div class="toolbox-group">
+        <div class="toolbox-group drawing-tools">
             <button class="canvas-button" onclick="clearCanvasAndSendEvent()"
                 alt="Clear the canvas" title="Clear the canvas">
                 <img alt="Rubber" title="Erase tool" src="/resources/trash.png" width="32px"
                          height="32px"/>
             </button>
+        </div>
+        <div class="pencil-sizes-container toolbox-group reaction-tools">
+            <button id="thumbs-up" class="canvas-button" alt="Like" title="Like" onclick="react('👍')">👍</button>
+            <button id="thumbs-down" class="canvas-button" alt="Dislike" onclick="react('👎')" title="Dislike">👎</button>
+        </div>
+        <div class="pencil-sizes-container toolbox-group reaction-tools">
+            <button id="grin" class="canvas-button" alt="Grin" title="Grin" onclick="react('😃')">😃</button>
+            <button id="rofl" class="canvas-button" alt="ROFL" title="ROFL" onclick="react('🤣')">🤣</button>
+            <button id="cry" class="canvas-button" alt="Cry" title="Cry" onclick="react('😭')">😭</button>
+            <button id="angry" class="canvas-button" alt="Angry" title="Angry" onclick="react('😠')">😠</button>
+            <button id="roll" class="canvas-button" alt="Roll" title="Roll" onclick="react('🙄')">🙄</button>
         </div>
     </div>
 </div>
@@ -299,7 +311,36 @@
     let sound = localStorage.getItem("sound") === "true";
     updateSoundIcon();
 
-    const toolPreview = new ToolPreview(document.getElementById("drawing-board-inner-wrapper"));
+    const board = document.getElementById("drawing-board-inner-wrapper");
+    const toolPreview = new ToolPreview(board);
+    const reactionSystem = new ReactionSystem(board);
+
+    function react(reaction) {
+        socket.send(JSON.stringify({
+            type: "reaction",
+            data: reaction,
+        }));
+    }
+
+    function updateAllowDrawing(allow) {
+        allowDrawing = allow;
+        enableDrawingTools(allow);
+        enableReactionTools(!allow);
+    }
+
+    function enableDrawingTools(enable) {
+        const tools = document.getElementsByClassName("drawing-tools");
+        for (let i = 0; i < tools.length; i++) {
+            tools[i].style.display = (enable) ? "inherit" : "none";
+        }
+    }
+
+    function enableReactionTools(enable) {
+        const tools = document.getElementsByClassName("reaction-tools");
+        for (let i = 0; i < tools.length; i++) {
+            tools[i].style.display = (enable) ? "inherit" : "none";
+        }
+    }
 
     function showKickDialog() {
         if (cachedPlayers && cachedPlayers) {
@@ -403,7 +444,8 @@
         return drawingBoard.clientWidth / baseWidth;
     }
 
-    let allowDrawing = false;
+    let allowDrawing;
+    updateAllowDrawing(false);
 
     const pen = 0;
     const rubber = 1;
@@ -491,7 +533,7 @@
             type: "choose-word",
             data: index
         }));
-        allowDrawing = true;
+        updateAllowDrawing(true);
         wordDialog.style.visibility = "hidden";
     }
 
@@ -540,7 +582,7 @@
             let ready = parsed.data;
             ownerID = ready.ownerId;
             ownName = ready.playerName;
-            allowDrawing = ready.drawing;
+            updateAllowDrawing(ready.drawing);
             ownID = ready.playerId;
             maxRounds = ready.maxRounds;
             roundEndTime = ready.roundEndTime;
@@ -609,8 +651,7 @@
 
             //We clear this, since there's no word chosen right now.
             wordContainer.innerHTML = "";
-
-            allowDrawing = false;
+            updateAllowDrawing(false);
         } else if (parsed.type === "your-turn") {
             promptWords(parsed.data[0], parsed.data[1], parsed.data[2]);
         } else if (parsed.type === "game-over") {
@@ -623,6 +664,8 @@
             } else {
                 gameOverDialog.style.visibility = "visible";
             }
+        } else if (parsed.type === "reaction") {
+            reactionSystem.react(parsed.data);
         }
     };
 

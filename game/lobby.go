@@ -169,6 +169,10 @@ func HandleEvent(raw []byte, received *JSEvent, lobby *Lobby, player *Player) er
 		commandNick(player, lobby, newName)
 	} else if received.Type == "keep-alive" {
 		log.Printf("Received keep-alive message from: %v\n", player.Name)
+	} else if received.Type == "reaction" {
+		for _, target := range lobby.Players {
+			WriteAsJSON(target, &JSEvent{Type: "reaction", Data: received.Data})
+		}
 	}
 
 	return nil
