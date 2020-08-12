@@ -4,7 +4,6 @@ import (
 	"math/rand"
 	"sync"
 	"time"
-	"log"
 
 	"github.com/gorilla/websocket"
 	uuid "github.com/satori/go.uuid"
