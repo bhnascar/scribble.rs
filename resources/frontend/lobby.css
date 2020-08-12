@@ -155,7 +155,6 @@
 #message-container {
     padding: 10px;
     overflow-y: scroll;
-    word-break: break-all;
     background-color: white;
 }
 
