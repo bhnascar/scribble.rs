@@ -26,7 +26,7 @@ var (
 
 var (
 	LobbySettingBounds = &SettingBounds{
-		MinDrawingTime:       60,
+		MinDrawingTime:       30,
 		MaxDrawingTime:       300,
 		MinRounds:            1,
 		MaxRounds:            20,
@@ -436,6 +436,8 @@ func endTurn(lobby *Lobby) {
 		}
 	}
 
+	var oldWord = lobby.CurrentWord
+
 	lobby.scoreEarnedByGuessers = 0
 	lobby.alreadyUsedWords = append(lobby.alreadyUsedWords, lobby.CurrentWord)
 	lobby.CurrentWord = ""
@@ -451,7 +453,16 @@ func endTurn(lobby *Lobby) {
 
 	WritePublicSystemMessage(lobby, roundOverMessage)
 
-	advanceLobby(lobby)
+	for _, target := range lobby.Players {
+		WriteAsJSON(target, &JSEvent{Type: "reveal-word", Data: oldWord})
+	}
+
+	recalculateRanks(lobby)
+	triggerPlayersUpdate(lobby)
+
+	time.AfterFunc(5 * time.Second, func() {
+		advanceLobby(lobby)
+	})
 }
 
 // advanceLobby will either start the game or jump over to the next turn.

@@ -269,8 +269,6 @@ func createLobby(
 
 	createDeleteMutex.Unlock()
 
-	log.Println("Host is " + host)
-
 	return lobby
 }
 
