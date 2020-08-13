@@ -304,7 +304,8 @@ input[type="button"]:active,
 .canvas-button {
     font-size: 30px;
     height: 50px;
-    width: 50px;
+    line-height: 50px;
+    min-width: 50px;
     border: 0;
     background-color: white;
 }
