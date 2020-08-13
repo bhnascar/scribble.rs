@@ -4,7 +4,6 @@ import (
 	"math/rand"
 	"sync"
 	"time"
-	"log"
 
 	"github.com/gorilla/websocket"
 	uuid "github.com/satori/go.uuid"
@@ -268,8 +267,6 @@ func createLobby(
 	lobbies = append(lobbies, lobby)
 
 	createDeleteMutex.Unlock()
-
-	log.Println("Host is " + host)
 
 	return lobby
 }
