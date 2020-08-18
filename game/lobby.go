@@ -421,9 +421,9 @@ func endTurn(lobby *Lobby) {
 
 	var roundOverMessage string
 	if lobby.CurrentWord == "" {
-		roundOverMessage = "Round's up! No word was chosen."
+		roundOverMessage = "Time's up! No word was chosen."
 	} else {
-		roundOverMessage = fmt.Sprintf("Round's up! The word was '%s'", lobby.CurrentWord)
+		roundOverMessage = fmt.Sprintf("Time's up! The word was '%s'", lobby.CurrentWord)
 	}
 
 	//The drawer can potentially be null if he's kicked, in that case we proceed with the round if anyone has already

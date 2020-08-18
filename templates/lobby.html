@@ -92,7 +92,7 @@
                 </div>
 
                 <div id="reveal-word-dialog" class="center-dialog-content">
-                    <span class="dialog-title">Round's up!</span>
+                    <span class="dialog-title">Time's up!</span>
                     <div>The word was...</div>
                     <div id="revealed-word" class="top-spacing"></div>
                 </div>
@@ -110,6 +110,19 @@
                     <div>
                         <input class="dialog-button username-input" type="text" name="name"></input>
                         <button class="dialog-button" onclick="waitDialogChangeName()">Change</button>
+                    </div>
+                </div>
+
+                <div id="disconnected-dialog" class="center-dialog-content">
+                    <span class="dialog-title">Uh oh</span>
+                    <div>You've been disconnected. 😔</div>
+                    <div class="top-spacing">
+                        <span>Possible causes:</span>
+                        <ul>
+                            <li>You got kicked (you bad person, you!)</li>
+                            <li>Timed out due to slothiness</li>
+                            <li>The server is feeling inhospitable</li>
+                        </ul>
                     </div>
                 </div>
 
@@ -307,6 +320,7 @@
     const changeNameDialog = document.getElementById("change-name-dialog");
     const wordDialog = document.getElementById("word-dialog");
     const revealWordDialog = document.getElementById("reveal-word-dialog");
+    const disconnectedDialog = document.getElementById("disconnected-dialog");
     const wordButtonZero = document.getElementById("word-button-zero");
     const wordButtonOne = document.getElementById("word-button-one");
     const wordButtonTwo = document.getElementById("word-button-two");
@@ -692,6 +706,7 @@
     socket.onclose = event => {
         console.log("Socket Closed Connection: ", event);
         clearHeartbeat();
+        disconnectedDialog.style.visibility = "visible";
     }
     socket.onerror = error => console.log("Socket Error: ", error);
 
