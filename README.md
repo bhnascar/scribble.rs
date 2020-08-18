@@ -1,6 +1,6 @@
 ## Scribble.rs
 
-Just a themed fork of the [scribble.rs](https://github.com/scribble-rs/scribble.rs). Please see the original repo for build instructions, etc. 😊
+Just a themed fork of [scribble.rs](https://github.com/scribble-rs/scribble.rs). Please see the original repo for build instructions, etc. 😊
 
 Play it at: [baby-pictionary.herokuapp.com](https://baby-pictionary.herokuapp.com/)
 
@@ -12,6 +12,7 @@ Play it at: [baby-pictionary.herokuapp.com](https://baby-pictionary.herokuapp.co
 - "Waiting for host to start..." dialog for guests
 - "The word was..." dialog after each turn
 - "Game over!" dialog with restart button
+- "Uh oh" dialog to warn when player is disconnected
 - Improved tool UI (pencil/paint bucket/eraser)
 - Heroku fixes (port binding, socket timeouts due to inactivity)
 
